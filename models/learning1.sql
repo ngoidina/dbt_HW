@@ -1,16 +1,32 @@
-
+with fb as (
     select 
-        date,
-        ad_id, 
-        adset_id,
         channel,
-        spend,
-        imps as impressions,
         clicks,
-        revenue,
-        conv as total_conversions,
-        campaign_id
-from {{ ref('src_ads_bing_all_data')}}
-
-
+        (clicks+comments+likes+shares+views) as engagements,
+        spend,
+        impressions
+    from {{ ref('src_ads_creative_facebook_all_data')}}
+),
+twitter as (
+    select 
+        channel,
+        clicks,
+        engagements,
+        spend,
+        impressions
+from {{ ref('src_promoted_tweets_twitter_all_data')}}
+)
+select channel,
+        clicks,
+        engagements,
+        spend,
+        impressions
+from fb
+union all
+select channel,
+        clicks,
+        engagements,
+        spend,
+        impressions
+from twitter
 
