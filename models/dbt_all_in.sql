@@ -1,7 +1,111 @@
-
-{{ dbt_utils.union_relations(
-
-    relations=[ref('src_ads_creative_facebook_all_data'), ref('src_ads_bing_all_data')]
-
-) }}
-
+select
+    ad_id,
+    null as add_to_cart,
+    adset_id,
+    campaign_id,
+    channel,
+    clicks,
+    null as comments,
+    null as creative_id,
+    date,
+    null as engagements,
+    imps as impressions,
+    null as installs,
+    null as likes,
+    null as link_clicks,
+    null as placement_id,
+    null as post_click_conversions,
+    null as post_view_conversions,
+    null as posts,
+    null as purchase,
+    null as registrations,
+    revenue,
+    null as shares,
+    spend,
+    conv as total_conversions,
+    null as video_views
+from {{ ref('src_ads_bing_all_data')}}
+union all
+select
+    ad_id,
+    add_to_cart,
+    adset_id,
+    campaign_id,
+    channel,
+    clicks,
+    comments,
+    creative_id,
+    date,
+    (clicks+comments+likes+shares+views) as engagements,
+    impressions,
+    mobile_app_install as installs,
+    likes,
+    inline_link_clicks as link_clicks,
+    null as placement_id,
+    null as post_click_conversions,
+    null as post_view_conversions,
+    null as posts,
+    purchase,
+    complete_registration as registrations,
+    null as revenue,
+    shares,
+    spend,
+    null as total_conversions,
+    views as video_views
+from {{ ref('src_ads_creative_facebook_all_data')}}
+union all
+select
+    ad_id,
+    add_to_cart,
+    null as adset_id,
+    campaign_id,
+    channel,
+    clicks,
+    null as comments,
+    null as creative_id,
+    date,
+    null as engagements,
+    impressions,
+    rt_installs as installs,
+    null as likes,
+    null as link_clicks,
+    null as placement_id,
+    null as post_click_conversions,
+    null as post_view_conversions,
+    null as posts,
+    purchase,
+    registrations,
+    null as revenue,
+    null as shares,
+    spend,
+    conversions as total_conversions,
+    video_views
+from {{ ref('src_ads_tiktok_ads_all_data')}}
+union all
+select
+    null as ad_id,
+    null as add_to_cart,
+    null as adset_id,
+    campaign_id,
+    channel,
+    clicks,
+    comments,
+    null as creative_id,
+    date,
+    engagements,
+    impressions,
+    null as installs,
+    likes,
+    url_clicks as link_clicks,
+    null as placement_id,
+    null as post_click_conversions,
+    null as post_view_conversions,
+    null as posts,
+    null as purchase,
+    null as registrations,
+    null as revenue,
+    null as shares,
+    spend,
+    null as total_conversions,
+    video_total_views as video_views
+from {{ ref('src_promoted_tweets_twitter_all_data')}}
