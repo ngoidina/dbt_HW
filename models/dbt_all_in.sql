@@ -50,7 +50,7 @@ select
     null as revenue,
     shares,
     spend,
-    null as total_conversions,
+    purchase as total_conversions,
     views as video_views
 from {{ ref('src_ads_creative_facebook_all_data')}}
 union all
