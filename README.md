@@ -109,7 +109,7 @@ To build the seeds, run `dbt seed` in the dbt Cloud console. Once the seeds have
 		from {{ ref('SOURCE_NAME')}}'
 
 
--  replace SOURCE_NAME with the name of the data source of the new ad platform (further in the text - 'new data source')
+-  replace SOURCE_NAME with the name of the new ad platform data source (further in the text - 'new data source')
 -  check columns in the new data source, and modify model code if necessary:
     -   if the column name in the select field is the name of the column in the new data source and data of the these columns is the same then remove 'null as'
     -   if the column name in the select field is a different name from the column in the new data source and data of the these columns is different then replace 'null as' with a column name from the new data source
