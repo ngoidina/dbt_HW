@@ -67,3 +67,53 @@ To build the seeds, run `dbt seed` in the dbt Cloud console. Once the seeds have
 
 	Q: What if there're no MCDM sctructure field in raw datasource data?
 	A: So you started understending the main goal of this task :-)	Suggest wich field or fields corresponds to MCDM ones by their meaning. If there're no such fields, then probably datasource just doesnt got them
+
+
+
+### How to data from new ad platforms into MCDM
+-  open dbt project
+-  add data source file of the new ad platform in seeds
+-  open MCDM model dbt_all_in.sql
+-  add next code:
+  
+		union all
+
+		select
+
+		null as ad_id,
+		null as add_to_cart,
+		null as adset_id,
+		null as campaign_id,
+		null as channel,
+		null as clicks,
+		null as comments,
+		null as creative_id,
+		null as date,
+		null as engagements,
+		null as impressions,
+		null as installs,
+		null as likes,
+		null as link_clicks,
+		null as placement_id,
+		null as post_click_conversions,
+		null as post_view_conversions,
+		null as posts,
+		null as purchase,
+		null as registrations,
+		null as revenue,
+		null as shares,
+		null as spend,
+		null as total_conversions,
+		null as video_views
+
+		from {{ ref('SOURCE_NAME')}}'
+
+
+-  replace SOURCE_NAME with the name of the data source of the new ad platform (further in the text - 'new data source')
+-  check columns in the new data source, and modify model code if necessary:
+    -   if the column name in the select field is the name of the column in the new data source and data of the these columns is the same then remove 'null as'
+    -   if the column name in the select field is a different name from the column in the new data source and data of the these columns is different then replace 'null as' with a column name from the new data source
+-  update the model (**preview** button -> fix the errors if necessary ->  **save** button ->  **build** ->  **build model** button
+-  save updates on GitHub
+
+   
